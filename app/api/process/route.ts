@@ -1,13 +1,16 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { after } from "next/server";
 import { extractActions, ExtractionError } from "@/lib/extract";
+import { corsPreflight, withCors } from "@/lib/cors";
 import { saveNote } from "@/lib/notes";
 import { notifyN8n } from "@/lib/webhook";
 import type { ProcessResponse } from "@/lib/types";
 
 const MAX_NOTES_CHARS = 100_000;
 
-export async function POST(request: Request) {
+export const OPTIONS = corsPreflight("POST");
+
+export const POST = withCors(async (request) => {
   let notes: unknown;
   try {
     ({ notes } = await request.json());
@@ -59,4 +62,4 @@ export async function POST(request: Request) {
     console.error(err);
     return Response.json({ error: "Unexpected server error." }, { status: 500 });
   }
-}
+});

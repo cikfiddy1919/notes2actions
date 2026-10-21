@@ -1,7 +1,10 @@
+import { corsPreflight, withCors } from "@/lib/cors";
 import { buildSpeechText, MAX_SPEECH_CHARS, SpeechError, synthesize } from "@/lib/speech";
 import type { ActionItem, ExtractResult } from "@/lib/types";
 
-export async function POST(request: Request) {
+export const OPTIONS = corsPreflight("POST");
+
+export const POST = withCors(async (request) => {
   let body: unknown;
   try {
     body = await request.json();
@@ -34,7 +37,7 @@ export async function POST(request: Request) {
     console.error(err);
     return Response.json({ error: "Unexpected server error." }, { status: 500 });
   }
-}
+});
 
 // Accepts only the fields we read aloud, with the expected types.
 function parseResult(body: unknown): ExtractResult | null {

@@ -1,8 +1,11 @@
 import { connection } from "next/server";
+import { corsPreflight, withCors } from "@/lib/cors";
 import { listNotes } from "@/lib/notes";
 import type { NotesResponse } from "@/lib/types";
 
-export async function GET() {
+export const OPTIONS = corsPreflight("GET");
+
+export const GET = withCors(async () => {
   // Always run at request time; never prerender this response at build.
   await connection();
 
@@ -14,4 +17,4 @@ export async function GET() {
     console.error(err);
     return Response.json({ error: "Could not load saved notes." }, { status: 500 });
   }
-}
+});
