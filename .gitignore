@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# secrets (keep .env.example committed as a template)
+!.env.example
+*.key
+*.p12
+*.pfx
+.secrets/
+service-account*.json
+
+# supabase CLI local state
+supabase/.temp/
+supabase/.branches/
