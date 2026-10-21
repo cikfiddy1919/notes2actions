@@ -1,6 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { after } from "next/server";
 import { extractActions, ExtractionError } from "@/lib/extract";
 import { saveNote } from "@/lib/notes";
+import { notifyN8n } from "@/lib/webhook";
 import type { ProcessResponse } from "@/lib/types";
 
 const MAX_NOTES_CHARS = 100_000;
@@ -33,6 +35,9 @@ export async function POST(request: Request) {
     } catch (dbErr) {
       console.error(dbErr);
     }
+
+    // Runs after the response is sent, so the webhook can't delay or break the result.
+    if (saved) after(() => notifyN8n(result));
 
     const body: ProcessResponse = { ...result, saved };
     return Response.json(body);
