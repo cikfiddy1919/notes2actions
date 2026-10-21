@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { ActionItem, NotesResponse, ProcessResponse, SavedNote } from "@/lib/types";
+import ListenButton from "./ListenButton";
 import styles from "./page.module.css";
 
 function ActionList({ items }: { items: ActionItem[] }) {
@@ -96,7 +97,10 @@ export default function Home() {
 
       {result && (
         <section className={styles.result}>
-          <h2>{result.title}</h2>
+          <div className={styles.noteHeader}>
+            <h2>{result.title}</h2>
+            <ListenButton result={result} />
+          </div>
           <p>{result.summary}</p>
           <h3>Action items</h3>
           <ActionList items={result.action_items} />
@@ -127,6 +131,7 @@ export default function Home() {
               </header>
               <p>{note.summary}</p>
               <ActionList items={note.action_items} />
+              <ListenButton result={note} />
               <details>
                 <summary className={styles.muted}>Original notes</summary>
                 <pre className={styles.raw}>{note.raw_text}</pre>
