@@ -2,7 +2,7 @@
 
 Paste messy meeting notes and get back a title, a short summary and a list of action items with owners and due dates. The result is saved, can be read aloud, and is emailed to me automatically.
 
-**Live demo:** https://notes2actions.vercel.app
+**Live demo:** [https://notes2actions.vercel.app](https://notes-to-next-steps.lovable.app)
 
 ## Why I built it
 
